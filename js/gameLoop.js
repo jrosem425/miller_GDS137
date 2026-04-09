@@ -21,11 +21,13 @@ function animate()
     if(player.x > canvas.width - player.width/2 || player.x < 0 + player.width/2)
     {
         player.vx*=-1
+        player.color = "purple";
     }
 
     if(player.y > canvas.height - player.height/2 || player.y < 0 + player.height/2)
     {
         player.vy*=-1
+        player.color = "darkblue";
     }
     player.draw();
 
