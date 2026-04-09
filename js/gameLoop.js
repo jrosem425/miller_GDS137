@@ -2,7 +2,7 @@ var canvas;
 var context;
 var player;
 var timer;
-var interval = 1000/60;
+var interval = 1000/200;
 
 
 canvas = document.getElementById("canvas");
@@ -18,9 +18,9 @@ function animate()
 {
     context.clearRect(0,0,canvas.width,canvas.height);
     player.move();
-    if(player.x > canvas.width + player.width/2)
+    if(player.x > canvas.width - player.width/2 || player.x < 0 + player.width/2)
     {
-        player.x = -player.width/2
+        player.vx*=-1
     }
     player.draw();
 
