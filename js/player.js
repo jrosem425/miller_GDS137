@@ -1,10 +1,9 @@
 function GameObject(x, y, w, h, color)
 {
-
-
     // set up player starting point
 
     //set up x
+
     if (x==undefined)
     {
         this.x = canvas.width/2;
@@ -16,6 +15,7 @@ function GameObject(x, y, w, h, color)
     }
 
     //set up y
+
     if (y==undefined)
     {
         this.y = canvas.height/2;
@@ -28,6 +28,7 @@ function GameObject(x, y, w, h, color)
 
 
     //set up width
+
     if (w==undefined)
     {
         this.width = 100;
@@ -40,6 +41,7 @@ function GameObject(x, y, w, h, color)
 
 
      //set up height
+
     if (h==undefined)
     {
         this.height = 100;
@@ -52,6 +54,7 @@ function GameObject(x, y, w, h, color)
 
 
     //set up color
+
     if (color==undefined)
     {
         this.color = "black";
@@ -63,10 +66,39 @@ function GameObject(x, y, w, h, color)
     }
 
 
+    //set up bounding box
+
+    this.left = function()
+    {
+        return this.x-this.width/2;
+    }
+
+    this.right = function()
+    {
+        return this.x+this.width/2;
+    }
+
+    this.top = function()
+    {
+        return this.y-this.height/2;
+    }
+
+    this.bottom = function()
+    {
+        return this.y+this.height/2;
+    }
+
+    this.prevX=this.x;
+
 
     //set up player velocity
+
     this.vx = 0;
     this.vy = 0;
+
+
+
+
 
     this.drawCirc = function()
     {
@@ -96,5 +128,22 @@ function GameObject(x, y, w, h, color)
         this.x += this.vx;
         this.y += this.vy;
     }
+
+
+    this.collisionCheck = function(obj)
+    {
+        if(
+            this.left() < obj.right() &&
+            this.right() > obj.left() &&
+            this.top() < obj.bottom() &&
+            this.bottom() > obj.top() 
+          )
+
+          {
+                return true;
+          }
+        return false;
+    }
+
 
 }
