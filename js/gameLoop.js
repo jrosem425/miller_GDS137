@@ -10,10 +10,10 @@ context = canvas.getContext("2d");
 
 //============================PONG GAME================================
 
-var player1 = new GameObject(0,canvas.height/2,20,60,"black");
+var player1 = new GameObject(0,canvas.height/2,20,100,"black");
 
-var ball = new GameObject(canvas.width/2,canvas.height/2,20,20,"grey");
-ball.vx = -5;
+var ball = new GameObject(canvas.width/2,canvas.height/2,40,40,"grey");
+ball.vx = -10;
 ball.vy = 0;
 
 timer = setInterval(animate, interval);
@@ -24,13 +24,13 @@ function animate()
 
     if (w)
     {
-        player1.y -= 4;
+        player1.y -= 8;
         
     }
 
     if (s)
     {
-        player1.y += 4;
+        player1.y += 8;
     }
 
     
@@ -58,6 +58,8 @@ function animate()
     {
         ball.x = canvas.width/2;
         ball.y = canvas.height/2;
+        ball.vx = -10;
+        ball.vy = 0;
     }
     
     if(ball.y > canvas.height - ball.height/2 || ball.y < 0 + ball.height/2)
@@ -74,7 +76,24 @@ function animate()
 
     if (ball.collisionCheck(player1))
     {
-       ball.vx*=-1;
+        //top
+        if (ball.y < player1.y -27)
+        {
+            ball.vx = 10;
+            ball.vy = -10;
+        }
+        //bottom
+        else if(ball.y>player1.y+27)
+        {
+            ball.vx = 10;
+            ball.vy = 10;
+        }
+        //middle
+        else
+        {
+            ball.vx*=-1;
+        }
+       
     }
 
     player1.drawRect();
