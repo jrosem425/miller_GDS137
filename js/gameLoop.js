@@ -13,8 +13,8 @@ context = canvas.getContext("2d");
 var player1 = new GameObject(0,canvas.height/2,20,60,"black");
 
 var ball = new GameObject(canvas.width/2,canvas.height/2,20,20,"grey");
-ball.vx = 2;
-ball.vy = 3;
+ball.vx = 5;
+ball.vy = 0;
 
 timer = setInterval(animate, interval);
 
@@ -48,7 +48,7 @@ function animate()
 
     
 
-     if(ball.x > canvas.width - ball.width/2 || ball.x < 0 + ball.width/2)
+     if(ball.x > canvas.width - ball.width/2)
     {
         ball.vx*=-1;
        
@@ -60,8 +60,16 @@ function animate()
         ball.vy*=-1;
        
     }
+
+
   
     ball.move();
+
+
+    if (ball.collisionCheck(player1))
+    {
+       ball.vx*=-1;
+    }
 
     player1.drawRect();
 
