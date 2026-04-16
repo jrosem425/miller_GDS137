@@ -13,7 +13,7 @@ context = canvas.getContext("2d");
 var player1 = new GameObject(0,canvas.height/2,20,60,"black");
 
 var ball = new GameObject(canvas.width/2,canvas.height/2,20,20,"grey");
-ball.vx = 5;
+ball.vx = -5;
 ball.vy = 0;
 
 timer = setInterval(animate, interval);
@@ -52,6 +52,12 @@ function animate()
     {
         ball.vx*=-1;
        
+    }
+
+    if(ball.x<0+ball.width/2)
+    {
+        ball.x = canvas.width/2;
+        ball.y = canvas.height/2;
     }
     
     if(ball.y > canvas.height - ball.height/2 || ball.y < 0 + ball.height/2)
