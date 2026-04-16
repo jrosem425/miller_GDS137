@@ -2,7 +2,7 @@ var canvas;
 var context;
 // var player;
 var timer;
-var interval = 1000/200;
+var interval = 1000/60;
 
 
 canvas = document.getElementById("canvas");
@@ -11,6 +11,10 @@ context = canvas.getContext("2d");
 //============================PONG GAME================================
 
 var player1 = new GameObject(0,canvas.height/2,20,60,"black");
+
+var ball = new GameObject(canvas.width/2,canvas.height/2,20,20,"grey");
+ball.vx = 2;
+ball.vy = 3;
 
 timer = setInterval(animate, interval);
 
@@ -29,7 +33,7 @@ function animate()
         player1.y += 4;
     }
 
-    player1.move();
+    
 
 
 
@@ -42,8 +46,26 @@ function animate()
         player1.y = 0 + player1.height/2;
     }
 
+    
+
+     if(ball.x > canvas.width - ball.width/2 || ball.x < 0 + ball.width/2)
+    {
+        ball.vx*=-1;
+       
+    }
+    
+    if(ball.y > canvas.height - ball.height/2 || ball.y < 0 + ball.height/2)
+    {
+
+        ball.vy*=-1;
+       
+    }
+  
+    ball.move();
 
     player1.drawRect();
+
+    ball.drawCirc();
 } 
 
 
