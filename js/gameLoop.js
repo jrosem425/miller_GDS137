@@ -1,6 +1,6 @@
 var canvas;
 var context;
-var player;
+// var player;
 var timer;
 var interval = 1000/200;
 
@@ -10,9 +10,32 @@ context = canvas.getContext("2d");
 
 //============================PONG GAME================================
 
-var player1 = new GameObject(0,100,20,60,"black");
+var player1 = new GameObject(0,canvas.height/2,20,60,"black");
 
-player1.drawRect();
+timer = setInterval(animate, interval);
+
+function animate()
+{
+    context.clearRect(0,0,canvas.width,canvas.height);
+
+    if (w)
+    {
+        player1.y -= 4;
+        
+    }
+
+    if (s)
+    {
+        player1.y += 4;
+    }
+
+    player1.move();
+
+    player1.drawRect();
+} 
+
+
+
 
 
 
