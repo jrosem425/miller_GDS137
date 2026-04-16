@@ -31,6 +31,18 @@ function animate()
 
     player1.move();
 
+
+
+    if(player1.y > canvas.height - player1.height/2)
+    {
+        player1.y = canvas.height - player1.height/2;
+    }
+    if(player1.y < 0 + player1.height/2)
+    {
+        player1.y = 0 + player1.height/2;
+    }
+
+
     player1.drawRect();
 } 
 
