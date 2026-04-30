@@ -70,25 +70,26 @@ function GameObject(x, y, w, h, color)
 
     this.left = function()
     {
-        return this.x-this.width/2;
+        return {x:this.x - this.width/2, y:this.y}
     }
 
     this.right = function()
     {
-        return this.x+this.width/2;
+        return {x:this.x + this.width/2, y:this.y}
     }
 
     this.top = function()
     {
-        return this.y-this.height/2;
+        return {x:this.x, y: this.y - this.height/2}
     }
 
     this.bottom = function()
     {
-        return this.y+this.height/2;
+        return {x:this.x, y: this.y + this.height/2}  
     }
 
     this.prevX=this.x;
+    this.canJump = false;
 
 
     //set up player velocity
@@ -122,6 +123,28 @@ function GameObject(x, y, w, h, color)
            
         context.restore();
     }
+
+
+
+    this.drawDebug = function()
+    {
+        var size = 10;
+        context.save();
+            context.fillRect(this.x-size/2, this.y-size/2,size,size);
+            context.fillRect(this.left().x-size/2,this.left().y-size/2,size,size);
+            context.fillRect(this.right().x-size/2,this.right().y-size/2,size,size);
+            context.fillRect(this.top().x-size/2,this.top().y-size/2,size,size);
+            context.fillRect(this.bottom().x-size/2,this.bottom().y-size/2,size,size);
+
+
+
+        context.restore();
+
+    }
+
+
+
+
 
     this.move = function()
     {

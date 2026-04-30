@@ -1,9 +1,12 @@
 var canvas;
 var context;
-// var player;
+var player;
 var timer;
 var interval = 1000/60;
 
+var frictionX = 0.8;
+var frictionY = 0.8;
+var gravity = 1;
 
 canvas = document.getElementById("canvas");
 context = canvas.getContext("2d");
@@ -14,163 +17,321 @@ context = canvas.getContext("2d");
 
 
 
+// //============================PLATFORMER================================
 
+player = new GameObject(canvas.width/2,canvas.height/2,100,100,"#7a2876")
+player.vx = 0;
+player.vy = 0;
+player.jumpSpeed = -20;
 
+// npc1 = new GameObject(300, canvas.height/2, 100, 100, "#00ff15");
+// npc2 = new GameObject(700, canvas.height/2, 100, 100, "#0059ff");
+// npc3 = new GameObject(900, canvas.height/2, 100, 100, "#ff0000");
 
-
-//============================PONG GAME================================
-
-var player1 = new GameObject(0,canvas.height/2,20,100,"black");
-
-var player2 = new GameObject(canvas.width,canvas.height/2,20,100,"black");
-
-var ball = new GameObject(canvas.width/2,canvas.height/2,40,40,"grey");
-ball.vx = -10;
-ball.vy = 0;
 
 timer = setInterval(animate, interval);
 
 function animate()
 {
-    context.clearRect(0,0,canvas.width,canvas.height);
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    if(w && player.canJump)
+    {
+        
+        player.vy += 20;
+        player.canJump = false;
+        console.log(player.canJump);
+    }
+
+    // if(d)
+    // {
+    //     player.x += 5;
+    // }
+    // if(a)
+    // {
+    //     player.x -= 5;
+    // }
+    // if(w)
+    // {
+    //     player.y -= 5;
+    // }
+    // if(s)
+    // {
+    //     player.y += 5;
+    // }
+
+   
+    doHandleAcceleration();
+    doHandleFriction();
+    doHandleGravity();
+    doUpdatePosition();
+    doCheckBottomBounds();
+     
+
+
+    player.move();
+    // if(player.x > canvas.width + player.width/2 - 100)
+    // {
+    //     player.vx *= -1;
+    // }
+    // if (player.x < 0 + player.width/2)
+    // {
+    //     player.vx = 30;
+    // }
+    // if(player.y > canvas.height + player.height/2 - 100)
+    // {
+    //     player.vy *= -1;
+    // }
+    // if (player.y < 0 + player.height/2)
+    // {
+    //     player.vy = 30;
+    // }
+    // if(player.x > canvas.width + player.width/2 - 100 && player.y > canvas.height + player.height/2 - 100)
+    // {
+    //     player.vx *= -1;
+    //     player.color = "#001aff";
+    // }
+    // if(player.x > canvas.width + player.width/2 - 100 && player.y < 0 + player.height/2)
+    // {
+    //     player.vx *= -1;
+    //     player.color = "#ae00ff";
+    // }
+    // if (player.x < 0 + player.width/2 && player.y > canvas.height + player.height/2 - 100)
+    // {
+    //     player.vx = 30;
+    //     player.color = "#fffb00";
+    // }
+    // if (player.x < 0 + player.width/2 && player.y < 0 + player.height/2)
+    // {
+    //     player.vx = 30;
+    //     player.color = "#00ff0d";
+    // }
+
+    // //=======================
+    // //npc 1 collisoion
+    // if(npc1.collisionCheck(player))
+    // {
+    //     npc1.color = "yellow";
+    // }
+    // else
+    // {
+    //     npc1.color = "green";
+    // }
+    // //=======================
+    // //npc 2 collisoion
+    // if(npc2.collisionCheck(player))
+    // {
+    //     context.strokeRect(npc2.x-npc2.width/2, npc2.y-npc2.height/2, npc2.width, npc2.height);
+    // }
+    // else
+    // {
+    //     npc2.color = "blue";
+    // }
+
+
+
+    player.drawRect();
+
+    player.drawDebug();
+    // npc1.drawCircle();
+    // npc2.drawCircle();
+    // npc3.drawCircle();
+
+    function doHandleAcceleration () {
+        if (d) {
+            player.vx += player.ax * player.force;
+        }
+
+        if (a) {
+            player.vx += player.ax * -player.force;
+        }
+    }
+
+    function doHandleFriction () {
+        player.vx *= frictionX;
+    }
+
+    function doHandleGravity () {
+        player.vy += gravity;
+    }
+
+    function doUpdatePosition () {
+        player.x += player.vx;
+        player.y += player.vy;
+    }
+
+    function doCheckBottomBounds() {
+        if (player.y >= canvas.height - player.height/2) {
+            player.y = canvas.height - player.height/2;
+            player.vy = 0;
+            player.canJump = true;
+            //doJump();
+        }
+    }
+
+    // function doJump () {
+    //     if (w) {
+    //         player.vy = player.jumpSpeed;
+    //     }
+    // }
+
+}
+ 
+
+
+// //============================PONG GAME================================
+
+// var player1 = new GameObject(0,canvas.height/2,20,100,"black");
+
+// var player2 = new GameObject(canvas.width,canvas.height/2,20,100,"black");
+
+// var ball = new GameObject(canvas.width/2,canvas.height/2,40,40,"grey");
+// ball.vx = -10;
+// ball.vy = 0;
+
+// timer = setInterval(animate, interval);
+
+// function animate()
+// {
+//     context.clearRect(0,0,canvas.width,canvas.height);
 
 
   
-    if (w)
-    {
-        player1.y -= 8;
+//     if (w)
+//     {
+//         player1.y -= 8;
         
-    }
+//     }
 
-    if (s)
-    {
-        player1.y += 8;
-    }
+//     if (s)
+//     {
+//         player1.y += 8;
+//     }
 
  
 
-    if (upArrow)
-    {
-        player2.y -= 8;
-        console.log("up");
+//     if (upArrow)
+//     {
+//         player2.y -= 8;
+//         console.log("up");
         
-    }
+//     }
 
-    if (downArrow)
-    {
-        player2.y += 8;
-        console.log("down");
-    }
+//     if (downArrow)
+//     {
+//         player2.y += 8;
+//         console.log("down");
+//     }
 
 
 
-    if(player1.y > canvas.height - player1.height/2)
-    {
-        player1.y = canvas.height - player1.height/2;
-    }
-    if(player1.y < 0 + player1.height/2)
-    {
-        player1.y = 0 + player1.height/2;
-    }
+//     if(player1.y > canvas.height - player1.height/2)
+//     {
+//         player1.y = canvas.height - player1.height/2;
+//     }
+//     if(player1.y < 0 + player1.height/2)
+//     {
+//         player1.y = 0 + player1.height/2;
+//     }
 
     
-    if(player2.y > canvas.height - player2.height/2)
-    {
-        player2.y = canvas.height - player2.height/2;
-    }
-    if(player2.y < 0 + player2.height/2)
-    {
-        player2.y = 0 + player2.height/2;
-    }
+//     if(player2.y > canvas.height - player2.height/2)
+//     {
+//         player2.y = canvas.height - player2.height/2;
+//     }
+//     if(player2.y < 0 + player2.height/2)
+//     {
+//         player2.y = 0 + player2.height/2;
+//     }
 
 
 
 
-    //  if(ball.x > canvas.width - ball.width/2)
-    // {
-    //     ball.vx*=-1;
+//     //  if(ball.x > canvas.width - ball.width/2)
+//     // {
+//     //     ball.vx*=-1;
        
-    // }
+//     // }
 
-    if(ball.x<0+ball.width/2)
-    {
-        ball.x = canvas.width/2;
-        ball.y = canvas.height/2;
-        ball.vx = -10;
-        ball.vy = 0;
-    }
+//     if(ball.x<0+ball.width/2)
+//     {
+//         ball.x = canvas.width/2;
+//         ball.y = canvas.height/2;
+//         ball.vx = -10;
+//         ball.vy = 0;
+//     }
 
-    if(ball.x>canvas.width-ball.width/2)
-    {
-         ball.x = canvas.width/2;
-        ball.y = canvas.height/2;
-        ball.vx = 10;
-        ball.vy = 0;
-    }
+//     if(ball.x>canvas.width-ball.width/2)
+//     {
+//          ball.x = canvas.width/2;
+//         ball.y = canvas.height/2;
+//         ball.vx = 10;
+//         ball.vy = 0;
+//     }
     
-    if(ball.y > canvas.height - ball.height/2 || ball.y < 0 + ball.height/2)
-    {
+//     if(ball.y > canvas.height - ball.height/2 || ball.y < 0 + ball.height/2)
+//     {
 
-        ball.vy*=-1;
+//         ball.vy*=-1;
        
-    }
+//     }
 
 
   
-    ball.move();
+//     ball.move();
 
 
-    if (ball.collisionCheck(player1))
-    {
-        //top
-        if (ball.y < player1.y -27)
-        {
-            ball.vx = 10;
-            ball.vy = -10;
-        }
-        //bottom
-        else if(ball.y>player1.y+27)
-        {
-            ball.vx = 10;
-            ball.vy = 10;
-        }
-        //middle
-        else
-        {
-            ball.vx*=-1;
-        }
+//     if (ball.collisionCheck(player1))
+//     {
+//         //top
+//         if (ball.y < player1.y -27)
+//         {
+//             ball.vx = 10;
+//             ball.vy = -10;
+//         }
+//         //bottom
+//         else if(ball.y>player1.y+27)
+//         {
+//             ball.vx = 10;
+//             ball.vy = 10;
+//         }
+//         //middle
+//         else
+//         {
+//             ball.vx*=-1;
+//         }
        
-    }
+//     }
 
 
-    if (ball.collisionCheck(player2))
-    {
-        //top
-        if (ball.y < player2.y -27)
-        {
-            ball.vx = -10;
-            ball.vy = -10;
-        }
-        //bottom
-        else if(ball.y>player2.y+27)
-        {
-            ball.vx = -10;
-            ball.vy = 10;
-        }
-        //middle
-        else
-        {
-            ball.vx*=-1;
-        }
+//     if (ball.collisionCheck(player2))
+//     {
+//         //top
+//         if (ball.y < player2.y -27)
+//         {
+//             ball.vx = -10;
+//             ball.vy = -10;
+//         }
+//         //bottom
+//         else if(ball.y>player2.y+27)
+//         {
+//             ball.vx = -10;
+//             ball.vy = 10;
+//         }
+//         //middle
+//         else
+//         {
+//             ball.vx*=-1;
+//         }
        
-    }
+//     }
 
 
-    player1.drawRect();
-    player2.drawRect();
+//     player1.drawRect();
+//     player2.drawRect();
 
-    ball.drawCirc();
-} 
+//     ball.drawCirc();
+// } 
 
 
 
