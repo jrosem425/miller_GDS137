@@ -8,9 +8,21 @@ var interval = 1000/60;
 canvas = document.getElementById("canvas");
 context = canvas.getContext("2d");
 
+
+
+
+
+
+
+
+
+
+
 //============================PONG GAME================================
 
 var player1 = new GameObject(0,canvas.height/2,20,100,"black");
+
+var player2 = new GameObject(canvas.width,canvas.height/2,20,100,"black");
 
 var ball = new GameObject(canvas.width/2,canvas.height/2,40,40,"grey");
 ball.vx = -10;
@@ -22,6 +34,8 @@ function animate()
 {
     context.clearRect(0,0,canvas.width,canvas.height);
 
+
+  
     if (w)
     {
         player1.y -= 8;
@@ -33,7 +47,20 @@ function animate()
         player1.y += 8;
     }
 
-    
+ 
+
+    if (upArrow)
+    {
+        player2.y -= 8;
+        console.log("up");
+        
+    }
+
+    if (downArrow)
+    {
+        player2.y += 8;
+        console.log("down");
+    }
 
 
 
@@ -47,18 +74,37 @@ function animate()
     }
 
     
-
-     if(ball.x > canvas.width - ball.width/2)
+    if(player2.y > canvas.height - player2.height/2)
     {
-        ball.vx*=-1;
-       
+        player2.y = canvas.height - player2.height/2;
     }
+    if(player2.y < 0 + player2.height/2)
+    {
+        player2.y = 0 + player2.height/2;
+    }
+
+
+
+
+    //  if(ball.x > canvas.width - ball.width/2)
+    // {
+    //     ball.vx*=-1;
+       
+    // }
 
     if(ball.x<0+ball.width/2)
     {
         ball.x = canvas.width/2;
         ball.y = canvas.height/2;
         ball.vx = -10;
+        ball.vy = 0;
+    }
+
+    if(ball.x>canvas.width-ball.width/2)
+    {
+         ball.x = canvas.width/2;
+        ball.y = canvas.height/2;
+        ball.vx = 10;
         ball.vy = 0;
     }
     
@@ -96,7 +142,32 @@ function animate()
        
     }
 
+
+    if (ball.collisionCheck(player2))
+    {
+        //top
+        if (ball.y < player2.y -27)
+        {
+            ball.vx = -10;
+            ball.vy = -10;
+        }
+        //bottom
+        else if(ball.y>player2.y+27)
+        {
+            ball.vx = -10;
+            ball.vy = 10;
+        }
+        //middle
+        else
+        {
+            ball.vx*=-1;
+        }
+       
+    }
+
+
     player1.drawRect();
+    player2.drawRect();
 
     ball.drawCirc();
 } 
